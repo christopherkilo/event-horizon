@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowLeft, Heart, Menu, X } from "lucide-react";
@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { NAV_LINKS, SITE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { useFavorites } from "@/contexts/FavoritesContext";
 
 const PORTFOLIO_CASE_STUDY = `${
@@ -18,7 +19,9 @@ export function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const { favorites } = useFavorites();
+  const { favorites, ready } = useFavorites();
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -28,8 +31,22 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
 
   return (
     <>
@@ -60,11 +77,11 @@ export function Navbar() {
                     "rounded-lg px-3 py-2 text-sm font-medium transition",
                     active
                       ? "bg-accent/15 text-accent"
-                      : "text-muted hover:bg-white/5 hover:text-ink",
+                      : "text-muted hover:bg-surface-elevated hover:text-ink",
                   )}
                 >
                   {link.label}
-                  {link.href === "/favorites" && favorites.length > 0 ? (
+                  {link.href === "/favorites" && ready && favorites.length > 0 ? (
                     <span className="ml-1.5 rounded-full bg-warm/20 px-1.5 py-0.5 text-[10px] text-warm">
                       {favorites.length}
                     </span>
@@ -85,7 +102,9 @@ export function Navbar() {
             <Button href="/browse" size="sm" className="hidden sm:inline-flex">
               Explore events
             </Button>
+            <ThemeToggle className="hidden md:inline-flex" />
             <button
+              ref={menuButtonRef}
               type="button"
               className="inline-flex size-10 items-center justify-center rounded-xl border border-border md:hidden"
               aria-label="Open menu"
@@ -108,7 +127,7 @@ export function Navbar() {
           >
             <button
               type="button"
-              className="absolute inset-0 bg-bg/80"
+              className="absolute inset-0 bg-overlay backdrop-blur-sm"
               aria-label="Close menu"
               onClick={() => setOpen(false)}
             />
@@ -122,6 +141,7 @@ export function Navbar() {
               <div className="mb-3 flex items-center justify-between">
                 <p className="text-sm text-muted">{SITE.name}</p>
                 <button
+                  ref={closeButtonRef}
                   type="button"
                   onClick={() => setOpen(false)}
                   aria-label="Close navigation"
@@ -134,6 +154,7 @@ export function Navbar() {
                 <li>
                   <a
                     href={PORTFOLIO_CASE_STUDY}
+                    onClick={() => setOpen(false)}
                     className="flex items-center gap-2 rounded-lg border border-accent/25 bg-accent/10 px-3 py-3 text-base font-medium text-accent"
                   >
                     <ArrowLeft className="size-4" aria-hidden />
@@ -144,7 +165,8 @@ export function Navbar() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="flex items-center gap-2 rounded-lg px-3 py-3 text-base font-medium hover:bg-white/5"
+                      onClick={() => setOpen(false)}
+                      className="flex items-center gap-2 rounded-lg px-3 py-3 text-base font-medium hover:bg-surface-elevated"
                     >
                       {link.href === "/favorites" ? (
                         <Heart className="size-4 text-warm" aria-hidden />
@@ -154,6 +176,9 @@ export function Navbar() {
                   </li>
                 ))}
               </ul>
+              <div className="mt-3 border-t border-border pt-3">
+                <ThemeToggle showLabel />
+              </div>
             </motion.nav>
           </motion.div>
         ) : null}

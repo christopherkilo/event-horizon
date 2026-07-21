@@ -5,10 +5,11 @@ import { events } from "@/lib/eventData";
 import { useFavorites } from "@/contexts/FavoritesContext";
 import { EventCard } from "@/components/events/EventCard";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { EventGridSkeleton } from "@/components/ui/Skeleton";
 import { staggerContainer } from "@/lib/animation";
 
 export function FavoritesClient() {
-  const { favorites } = useFavorites();
+  const { favorites, ready } = useFavorites();
   const liked = events.filter((event) => favorites.includes(event.id));
 
   return (
@@ -17,10 +18,14 @@ export function FavoritesClient() {
         Favorites
       </h1>
       <p className="mt-2 text-sm text-muted">
-        Saved locally in this browser — swap for an account later.
+        Your saved events stay private to this browser.
       </p>
 
-      {liked.length === 0 ? (
+      {!ready ? (
+        <div className="mt-8">
+          <EventGridSkeleton count={3} />
+        </div>
+      ) : liked.length === 0 ? (
         <div className="mt-10">
           <EmptyState
             title="No favorites yet"

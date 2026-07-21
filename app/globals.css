@@ -9,8 +9,58 @@
   --border: rgba(148, 163, 184, 0.16);
   --accent: #22d3ee;
   --accent-strong: #06b6d4;
+  --on-accent: #04212a;
   --warm: #fb923c;
+  --on-warm: #2a1002;
+  --overlay: rgba(3, 7, 18, 0.82);
+  --hero-start: #0a1220;
+  --hero-cool-glow: rgba(34, 211, 238, 0.18);
+  --hero-warm-glow: rgba(251, 146, 60, 0.12);
+  --card-shadow: 0 20px 40px -28px rgba(0, 0, 0, 0.8);
   --nav-height: 4.25rem;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --bg: #f7fafc;
+  --surface: #ffffff;
+  --surface-elevated: #e9f0f4;
+  --ink: #14202b;
+  --muted: #526474;
+  --border: rgba(34, 57, 75, 0.18);
+  --accent: #087c8d;
+  --accent-strong: #066575;
+  --on-accent: #ffffff;
+  --warm: #b94f0b;
+  --on-warm: #ffffff;
+  --overlay: rgba(15, 27, 38, 0.55);
+  --hero-start: #e8f6f8;
+  --hero-cool-glow: rgba(8, 124, 141, 0.16);
+  --hero-warm-glow: rgba(185, 79, 11, 0.1);
+  --card-shadow: 0 20px 44px -30px rgba(30, 55, 70, 0.32);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --bg: #f7fafc;
+    --surface: #ffffff;
+    --surface-elevated: #e9f0f4;
+    --ink: #14202b;
+    --muted: #526474;
+    --border: rgba(34, 57, 75, 0.18);
+    --accent: #087c8d;
+    --accent-strong: #066575;
+    --on-accent: #ffffff;
+    --warm: #b94f0b;
+    --on-warm: #ffffff;
+    --overlay: rgba(15, 27, 38, 0.55);
+    --hero-start: #e8f6f8;
+    --hero-cool-glow: rgba(8, 124, 141, 0.16);
+    --hero-warm-glow: rgba(185, 79, 11, 0.1);
+    --card-shadow: 0 20px 44px -30px rgba(30, 55, 70, 0.32);
+    color-scheme: light;
+  }
 }
 
 @theme inline {
@@ -22,7 +72,10 @@
   --color-border: var(--border);
   --color-accent: var(--accent);
   --color-accent-strong: var(--accent-strong);
+  --color-on-accent: var(--on-accent);
   --color-warm: var(--warm);
+  --color-on-warm: var(--on-warm);
+  --color-overlay: var(--overlay);
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
 }
@@ -59,7 +112,7 @@ body {
 
 ::selection {
   background: color-mix(in srgb, var(--accent) 45%, transparent);
-  color: #fff;
+  color: var(--ink);
 }
 
 :focus-visible {
@@ -73,7 +126,25 @@ body {
 
 .hero-glow {
   background:
-    radial-gradient(ellipse 70% 50% at 80% 0%, rgba(34, 211, 238, 0.18), transparent 55%),
-    radial-gradient(ellipse 50% 40% at 10% 90%, rgba(251, 146, 60, 0.12), transparent 50%),
-    linear-gradient(180deg, #0a1220 0%, var(--bg) 70%);
+    radial-gradient(ellipse 70% 50% at 80% 0%, var(--hero-cool-glow), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 10% 90%, var(--hero-warm-glow), transparent 50%),
+    linear-gradient(180deg, var(--hero-start) 0%, var(--bg) 70%);
+}
+
+.theme-icon-dark {
+  display: none;
+}
+
+:root[data-theme="light"] .theme-icon-light {
+  display: none;
+}
+
+:root[data-theme="light"] .theme-icon-dark {
+  display: block;
+}
+
+input,
+select,
+textarea {
+  accent-color: var(--accent);
 }

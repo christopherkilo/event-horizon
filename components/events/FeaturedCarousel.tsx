@@ -72,7 +72,7 @@ export function FeaturedCarousel({ events }: FeaturedCarouselProps) {
             </p>
             <Link
               href={`/events/${current.id}`}
-              className="mt-6 inline-flex h-11 w-fit items-center rounded-xl bg-accent px-5 text-sm font-semibold text-bg transition hover:bg-accent-strong"
+              className="mt-6 inline-flex h-11 w-fit items-center rounded-xl bg-accent px-5 text-sm font-semibold text-on-accent transition hover:bg-accent-strong"
             >
               View event
             </Link>

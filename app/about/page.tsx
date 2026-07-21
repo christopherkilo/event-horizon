@@ -19,14 +19,15 @@ export default function AboutPage() {
       <div className="mt-6 space-y-4 text-base leading-relaxed text-muted">
         <p>{SITE.description}</p>
         <p>
-          This is a production-quality frontend demo with searchable catalogs,
-          filters, favorites, detail pages, and motion that stays out of the
-          way. All content is placeholder so you can swap real venues and
-          ticketing later.
+          This interactive concept demonstrates searchable event discovery,
+          precise filters, browser-saved favorites, and a complete simulated
+          reservation experience. The featured events and checkout are
+          illustrative; no real tickets or payments are processed.
         </p>
         <p>
-          Designed as a SaaS-style product experience: fast browsing, clear
-          hierarchy, and components ready to scale.
+          Every interaction is designed to feel immediate and intentional,
+          from the responsive catalog to accessible motion and keyboard
+          navigation.
         </p>
       </div>
       <div className="mt-8">

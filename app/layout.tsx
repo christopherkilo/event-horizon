@@ -4,6 +4,23 @@ import { Providers } from "@/components/layout/Providers";
 import { SITE } from "@/lib/constants";
 import "./globals.css";
 
+const themeInitializer = `
+  (function () {
+    try {
+      var stored = localStorage.getItem("event-horizon-theme");
+      var theme = stored === "light" || stored === "dark"
+        ? stored
+        : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme;
+    } catch (_) {
+      var fallback = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.dataset.theme = fallback;
+      document.documentElement.style.colorScheme = fallback;
+    }
+  })();
+`;
+
 const sans = Plus_Jakarta_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
@@ -30,7 +47,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${display.variable} h-full`}>
+    <html
+      lang="en"
+      className={`${sans.variable} ${display.variable} h-full`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitializer }} />
+      </head>
       <body className="flex min-h-full flex-col antialiased">
         <Providers>{children}</Providers>
       </body>

@@ -26,7 +26,7 @@ export function EventCard({ event, className }: EventCardProps) {
       whileHover={{ y: -8 }}
       transition={springHover}
       className={cn(
-        "group overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_20px_40px_-28px_rgba(0,0,0,0.8)]",
+        "group overflow-hidden rounded-2xl border border-border bg-surface shadow-[var(--card-shadow)]",
         className,
       )}
     >
@@ -74,7 +74,7 @@ export function EventCard({ event, className }: EventCardProps) {
               "inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-border transition",
               liked
                 ? "bg-warm/15 text-warm"
-                : "text-muted hover:bg-white/5 hover:text-ink",
+                : "text-muted hover:bg-surface-elevated hover:text-ink",
             )}
             aria-label={liked ? "Remove from favorites" : "Add to favorites"}
             aria-pressed={liked}

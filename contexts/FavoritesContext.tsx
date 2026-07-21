@@ -11,6 +11,7 @@ import {
 
 type FavoritesContextValue = {
   favorites: string[];
+  ready: boolean;
   isFavorite: (id: string) => boolean;
   toggleFavorite: (id: string) => void;
 };
@@ -23,13 +24,16 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setFavorites(JSON.parse(raw) as string[]);
-    } catch {
-      /* ignore */
-    }
-    setReady(true);
+    const hydrationTask = window.setTimeout(() => {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) setFavorites(JSON.parse(raw) as string[]);
+      } catch {
+        /* Ignore unavailable or malformed browser storage. */
+      }
+      setReady(true);
+    }, 0);
+    return () => window.clearTimeout(hydrationTask);
   }, []);
 
   useEffect(() => {
@@ -49,8 +53,8 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ favorites, isFavorite, toggleFavorite }),
-    [favorites, isFavorite, toggleFavorite],
+    () => ({ favorites, ready, isFavorite, toggleFavorite }),
+    [favorites, ready, isFavorite, toggleFavorite],
   );
 
   return (

@@ -12,12 +12,14 @@ import { cn } from "@/lib/utils";
 type FilterSidebarProps = {
   filters: EventFilters;
   onChange: (next: EventFilters) => void;
+  onReset: () => void;
   className?: string;
 };
 
 export function FilterSidebar({
   filters,
   onChange,
+  onReset,
   className,
 }: FilterSidebarProps) {
   function update<K extends keyof EventFilters>(key: K, value: EventFilters[K]) {
@@ -37,15 +39,7 @@ export function FilterSidebar({
         <button
           type="button"
           className="text-xs font-medium text-accent hover:underline"
-          onClick={() =>
-            onChange({
-              query: filters.query,
-              category: "All",
-              city: "All",
-              date: "",
-              sort: "date-asc",
-            })
-          }
+          onClick={onReset}
         >
           Reset
         </button>
