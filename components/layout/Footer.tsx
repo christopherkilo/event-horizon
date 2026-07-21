@@ -1,10 +1,6 @@
 import Link from "next/link";
 import { NAV_LINKS, SITE } from "@/lib/constants";
 
-const PORTFOLIO_CASE_STUDY = `${
-  process.env.NEXT_PUBLIC_PORTFOLIO_URL ?? "http://localhost:3000"
-}/projects/event-horizon`;
-
 export function Footer() {
   return (
     <footer className="mt-auto border-t border-border bg-surface/40">
@@ -31,15 +27,9 @@ export function Footer() {
             </ul>
           </nav>
         </div>
-        <div className="flex flex-col gap-3 border-t border-border pt-6 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
-          <p>{SITE.copyright}</p>
-          <a
-            href={PORTFOLIO_CASE_STUDY}
-            className="transition hover:text-ink"
-          >
-            View portfolio case study →
-          </a>
-        </div>
+        <p className="border-t border-border pt-6 text-sm text-muted">
+          {SITE.copyright}
+        </p>
       </div>
     </footer>
   );

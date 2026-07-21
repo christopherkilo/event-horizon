@@ -3,12 +3,16 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Heart, Menu, X } from "lucide-react";
+import { ArrowLeft, Heart, Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { NAV_LINKS, SITE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { useFavorites } from "@/contexts/FavoritesContext";
+
+const PORTFOLIO_CASE_STUDY = `${
+  process.env.NEXT_PUBLIC_PORTFOLIO_URL ?? "http://localhost:3000"
+}/projects/event-horizon`;
 
 export function Navbar() {
   const pathname = usePathname();
@@ -71,6 +75,13 @@ export function Navbar() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <a
+              href={PORTFOLIO_CASE_STUDY}
+              className="hidden h-9 items-center gap-2 rounded-xl border border-accent/30 bg-accent/10 px-3 text-sm font-semibold text-accent transition hover:border-accent/50 hover:bg-accent/15 sm:inline-flex"
+            >
+              <ArrowLeft className="size-3.5" aria-hidden />
+              Case study
+            </a>
             <Button href="/browse" size="sm" className="hidden sm:inline-flex">
               Explore events
             </Button>
@@ -120,6 +131,15 @@ export function Navbar() {
                 </button>
               </div>
               <ul className="space-y-1">
+                <li>
+                  <a
+                    href={PORTFOLIO_CASE_STUDY}
+                    className="flex items-center gap-2 rounded-lg border border-accent/25 bg-accent/10 px-3 py-3 text-base font-medium text-accent"
+                  >
+                    <ArrowLeft className="size-4" aria-hidden />
+                    Back to portfolio case study
+                  </a>
+                </li>
                 {NAV_LINKS.map((link) => (
                   <li key={link.href}>
                     <Link
